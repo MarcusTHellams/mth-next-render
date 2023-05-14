@@ -1,8 +1,8 @@
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { ApolloServer } from '@apollo/server';
 import { gql } from 'graphql-request';
-import { NextRequest, NextResponse } from 'next/server';
-import { NextApiRequest } from 'next';
+
+console.log(process.env);
 
 const resolvers = {
   Query: {
