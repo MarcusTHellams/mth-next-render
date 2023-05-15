@@ -7,38 +7,105 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Book {
-  id              String @id
-  title           String
-  publicationDate String
-  User            User[]
+enum Priority {
+  High
+  Medium
+  Low
+  None
 }
 
-model Role {
-  id           String         @id
-  title        String
-  description  String
-  RolesOnUsers RolesOnUsers[]
+enum Type {
+  Bug
+  Feature
+  Story
 }
 
-model RolesOnUsers {
-  roleId    String
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime
-  Role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, roleId])
+enum Status {
+  InProgress
+  New
+  Open
+  Resolved
 }
 
 model User {
-  id           String         @id
-  firstName    String
-  lastName     String
-  email        String
-  username     String
-  password     String
-  RolesOnUsers RolesOnUsers[]
-  Book         Book[]
+  id        String           @id @default(uuid())
+  firstName String
+  lastName  String
+  username  String           @unique
+  email     String           @unique
+  password  String
+  imageUrl  String?
+  projects  ProjectsOnUser[]
+  tickets   Ticket[]
+  submit    Ticket[]         @relation(name: "submit")
+  comments  Comment[]
+  roles     RolesOnUsers[]
+}
+
+model Project {
+  id                String           @id @default(uuid())
+  title             String
+  description       String
+  assignedPersonnel ProjectsOnUser[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  tickets           Ticket[]
+  roles             Role[]
+}
+
+model ProjectsOnUser {
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  projectId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, projectId])
+}
+
+model Role {
+  id        Int            @id @default(autoincrement())
+  name      String         @unique
+  project   Project?       @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId String?
+  user      RolesOnUsers[]
+}
+
+model RolesOnUsers {
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  roleId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, roleId])
+}
+
+model Ticket {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  status      Status
+  type        Type
+  priority    Priority
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  developer   User?     @relation(fields: [developerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  developerId String?
+  submitter   User      @relation(fields: [submitterId], references: [id], name: "submit")
+  submitterId String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  projectId   String
+  comments    Comment[]
+}
+
+model Comment {
+  id          String   @id @default(uuid())
+  message     String
+  commenter   User     @relation(fields: [commenterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  commenterId String
+  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ticketId    String
 }
