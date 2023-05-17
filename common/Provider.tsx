@@ -3,6 +3,7 @@
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { SessionProvider } from "next-auth/react";
 
 const client = new QueryClient({
 	defaultOptions: {
@@ -19,11 +20,13 @@ const client = new QueryClient({
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<QueryClientProvider {...{ client }}>
-			<CacheProvider>
-				<ChakraProvider>{children}</ChakraProvider>
-			</CacheProvider>
-		</QueryClientProvider>
+		<SessionProvider>
+      <QueryClientProvider {...{ client }}>
+        <CacheProvider>
+          <ChakraProvider>{children}</ChakraProvider>
+        </CacheProvider>
+      </QueryClientProvider>
+    </SessionProvider>
 	);
 };
 
