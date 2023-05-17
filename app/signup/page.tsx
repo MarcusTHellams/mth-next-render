@@ -66,7 +66,7 @@ const SignUp = () => {
 
 			delete body.passwordVerification;
 
-			return axiosInstance.post('/auth/signup', body).then(({ data }) => data);
+			return axiosInstance.post('/signup', body).then(({ data }) => data);
 		},
 		onSuccess() {
 			router.push('/');
