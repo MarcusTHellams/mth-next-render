@@ -22,6 +22,9 @@
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
 
+    --marcus: 0 100% 24%;
+    --marcus-foreground: 0 49% 39%;
+
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
@@ -81,6 +84,22 @@
 }
 
 @layer components {
+
+  .btn-group {
+    @apply inline-flex
+  }
+
+  .btn-group .btn:first-child:not(:last-child) {
+    @apply -ml-[1px] !rounded-tr-none !rounded-br-none
+  }
+  .btn-group .btn:not(:first-child):not(:last-child) {
+    @apply !rounded-none
+  }
+
+  .btn-group .btn:last-child:not(:first-child) {
+    @apply !rounded-tl-none !rounded-bl-none
+  }
+
   .ps-sidebar-container {
     @apply !bg-inherit;
   }
