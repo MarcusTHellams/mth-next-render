@@ -5,6 +5,7 @@ module.exports = {
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
+    'node_modules/react-pro-sidebar/**/*.{js,jsx}',
 	],
   theme: {
     container: {

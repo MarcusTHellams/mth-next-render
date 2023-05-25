@@ -1,7 +1,7 @@
 import { prismaClient } from '@/prismaConnection';
 
-export default prismaClient.role.createMany({
-  data: [
+export default prismaClient.$transaction(
+  [
     {
       name: 'Admin',
     },
@@ -14,5 +14,28 @@ export default prismaClient.role.createMany({
     {
       name: 'Developer',
     },
-  ],
-});
+  ].map((obj) => {
+    return prismaClient.role.create({
+      data: {
+        name: obj.name,
+      },
+    });
+  })
+);
+
+// export default prismaClient.role.createMany({
+//   data: [
+//     {
+//       name: 'Admin',
+//     },
+//     {
+//       name: 'Project Manager',
+//     },
+//     {
+//       name: 'Submitter',
+//     },
+//     {
+//       name: 'Developer',
+//     },
+//   ],
+// });

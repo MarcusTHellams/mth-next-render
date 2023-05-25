@@ -4,9 +4,9 @@ import users from "./users";
 import tickets from "./tickets";
 
 
-// (async () => {
-//   await users;
-//   await roles;
-//   await projects;
-//   await tickets;
-// })()
+(async () => {
+  // await users;
+  // await roles;
+  // await projects;
+  await tickets;
+})()

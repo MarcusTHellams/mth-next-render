@@ -24,6 +24,11 @@ export default prismaClient.project.findMany().then(async (projects) => {
               id: users[Math.floor(Math.random() * users.length)].id,
             },
           },
+          developer: {
+            connect: {
+              id: users[Math.floor(Math.random() * users.length)].id,
+            },
+          },
           project: {
             connect: {
               id: projects[Math.floor(Math.random() * projects.length)].id,

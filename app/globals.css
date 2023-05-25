@@ -1,4 +1,4 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -75,7 +75,17 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-background text-foreground relative min-h-full overscroll-none;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
   }
-} */
+}
+
+@layer components {
+  .ps-sidebar-container {
+    @apply !bg-inherit;
+  }
+
+  .ps-menu-button {
+    @apply hover:!bg-red-600;
+  }
+}
